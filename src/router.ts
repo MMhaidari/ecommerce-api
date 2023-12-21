@@ -2,6 +2,7 @@ import { Router } from 'express';
 import { body } from 'express-validator'
 import { handleInputErrors } from './modules/middleware';
 import { getProducts, getOneProduct, createProduct, updateProduct, deleteProduct } from './handlers/product';
+import { getOneUpdate, getUpdates, createUpdate, updateUpdate, deleteUpdate  } from './handlers/update';
 
 const router = Router();
 
@@ -13,21 +14,22 @@ router.put('/product/:id', body('name').isString(), handleInputErrors, updatePro
 router.delete('/product/:id', deleteProduct)
 
 // Update
-router.get('/update', ()=> {})
+router.get('/update', ()=> getUpdates)
 router.post('/update',
     body('title').exists().isString(),
     body('body').exists().isString(),
-    ()=> {}
+    body('productId').exists().isString(),
+    createUpdate
 )
-router.get('/update/:id', ()=> {})
+router.get('/update/:id', getOneUpdate)
 router.put('/update/:id',
     body('title').optional(),
     body('body').optional(),
     body('status').isIn(['IN_PROGRESS', 'SHIPPED', 'DEPRECATED']).optional(),
     body('version').optional(),
-    ()=> {}
+    updateUpdate
 )
-router.delete('/update/:id', ()=> {})
+router.delete('/update/:id', deleteUpdate)
 
 // Update points
 router.get('/updatepoint', ()=> {})
